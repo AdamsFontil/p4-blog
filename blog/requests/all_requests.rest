@@ -1,13 +1,13 @@
-GET http://localhost:3005/api/blogs
+GET http://localhost:3003/api/blogs
 
 
 ###
-POST http://localhost:3005/api/blogs/ HTTP/1.1
+POST http://localhost:3003/api/blogs/ HTTP/1.1
 content-type: application/json
 
 {
-    "title": "Tôi không thích tiếng ồn",
-    "author": "ABM",
-    "url": "lingodeer.net",
-    "likes": 62304
+    "title": "Con gai va con trai deu thich tao",
+    "author": "PFPITME",
+    "url": "vPod101.com",
+    "likes": 9224
 }
