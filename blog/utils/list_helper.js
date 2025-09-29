@@ -31,6 +31,37 @@ const totalLikes = (blogs) => {
 
 }
 
+// const favoriteBlog = (blogs) => {
+//   const max = blogs.reduce((maxSoFar, num) => Math.max(maxSoFar, num), blogs[0])
+//   console.log('what is max',max)
+//   return blogs.length === 0
+//     ? 0
+//     : max
+// }
+
+
+const favoriteBlog = (blogs) => {
+  console.log('blogs input:', blogs)
+
+  if (blogs.length === 0) return 0
+
+  const max = blogs.reduce((maxSoFar, currentBlog, index) => {
+    console.log('Iteration:', index)
+    console.log('maxSoFar:', maxSoFar)
+    console.log('currentBlog:', currentBlog)
+    console.log('compare the likes',maxSoFar.likes, currentBlog.likes)
+    if (currentBlog.likes > maxSoFar.likes) {
+      console.log('found new big', currentBlog)
+      return currentBlog
+    } else return maxSoFar
+
+  })
+
+  console.log('what is max', max)
+  return max
+}
+
+
 
 
 
@@ -38,5 +69,5 @@ const totalLikes = (blogs) => {
 
 
 module.exports = {
-  dummy, totalLikes
+  dummy, totalLikes, favoriteBlog
 }
