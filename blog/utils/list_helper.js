@@ -1,3 +1,7 @@
+const _ = require ('lodash')
+
+
+
 const dummy = (blogs) => {
   console.log('what is blogs---', blogs)
   return 1
@@ -31,14 +35,6 @@ const totalLikes = (blogs) => {
 
 }
 
-// const favoriteBlog = (blogs) => {
-//   const max = blogs.reduce((maxSoFar, num) => Math.max(maxSoFar, num), blogs[0])
-//   console.log('what is max',max)
-//   return blogs.length === 0
-//     ? 0
-//     : max
-// }
-
 
 const favoriteBlog = (blogs) => {
   console.log('blogs input:', blogs)
@@ -61,7 +57,15 @@ const favoriteBlog = (blogs) => {
   return max
 }
 
-
+const mostBlogs = (blogs) => {
+  if (blogs.length === 0) return 0
+  const chain = _(blogs)
+    .countBy('author')                          // returns all authors
+    .map((count, author) => ({ author, blogs: count }))  // turn into array
+    .maxBy('blogs')                             // get author with most blogs
+  console.log('result of chaining lodash', chain)
+  return chain
+}
 
 
 
@@ -69,5 +73,5 @@ const favoriteBlog = (blogs) => {
 
 
 module.exports = {
-  dummy, totalLikes, favoriteBlog
+  dummy, totalLikes, favoriteBlog, mostBlogs
 }
