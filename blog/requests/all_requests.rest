@@ -10,8 +10,8 @@ POST http://localhost:3003/api/blogs/ HTTP/1.1
 content-type: application/json
 
 {
-    "title": "Con gai va con trai deu thich tao",
+    "title": "Test if never post method with async works",
     "author": "PFPITME",
-    "url": "vPod101.com",
-    "likes": 9224
+    "url": "23020ssjd1.com",
+    "likes": 9223145
 }
