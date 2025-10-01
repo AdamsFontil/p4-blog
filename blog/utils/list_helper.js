@@ -1,22 +1,10 @@
 const _ = require ('lodash')
 
-
-
 const dummy = (blogs) => {
   console.log('what is blogs---', blogs)
   return 1
 }
 
-
-// const average = array => {
-//   const reducer = (sum, item) => {
-//     return sum + item
-//   }
-
-//   return array.length === 0
-//     ? 0
-//     : array.reduce(reducer, 0) / array.length
-// }
 
 
 const totalLikes = (blogs) => {
@@ -67,11 +55,23 @@ const mostBlogs = (blogs) => {
   return chain
 }
 
+const mostLikes = (blogs) => {
+  if (blogs.length === 0) return 0
+  const chain = _(blogs)
+    .groupBy('author')
+    .tap(grouped => console.log('grouped by author',grouped))
+    .map((blogs, author) => ({ author, likes: _.sumBy(blogs, 'likes') }))
+    .tap(blogs => console.log('new array of blogs and likes created', blogs))
+    .maxBy('likes')
+  console.log('result of chaining lodash', chain)
+  return chain
+}
+
 
 
 
 
 
 module.exports = {
-  dummy, totalLikes, favoriteBlog, mostBlogs
+  dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes
 }
