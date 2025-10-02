@@ -10,7 +10,6 @@ POST http://localhost:3003/api/blogs/ HTTP/1.1
 content-type: application/json
 
 {
-    "title": "no likes equals 0",
-    "author": "PFPITME",
-    "url": "23sjd1.com"
+    "title": "missing URL should not work",
+    "author": "PFPITME"
 }
