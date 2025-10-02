@@ -10,8 +10,7 @@ POST http://localhost:3003/api/blogs/ HTTP/1.1
 content-type: application/json
 
 {
-    "title": "Test if never post method with async works",
+    "title": "no likes equals 0",
     "author": "PFPITME",
-    "url": "23020ssjd1.com",
-    "likes": 9223145
+    "url": "23sjd1.com"
 }

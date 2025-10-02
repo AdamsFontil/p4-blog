@@ -42,24 +42,18 @@ test('id string is the identifier', async () => {
   assert.strictEqual(callSpecificBlog.body._id, undefined, 'Expected "_id" to be undefined')
   console.log('confirm that calling specific blog results in id instead _id also _v should be missing', callSpecificBlog.body )
 })
-test.only('a valid blog can be added ', async () => {
+test('a valid blog can be added ', async () => {
   const newBlog = {
     title: 'Con gai va con trai deu thich tao',
     author: 'PFPITME',
     url: 'vPod101.com',
     likes: 9224
   }
-
-
   await api
     .post('/api/blogs')
     .send(newBlog)
     .expect(201)
     .expect('Content-Type', /application\/json/)
-
-
-
-
   const blogsAtEnd = await helper.blogsInDb()
   console.log('blogs at the end, look for new entry,',blogsAtEnd)
   assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length + 1)
@@ -72,6 +66,19 @@ test.only('a valid blog can be added ', async () => {
     ),
     'Expected blog with matching content not found'
   )
+})
+test.only ('no likes = 0', async () => {
+  const blogWithoutLikes = {
+    title: 'Con gai va con trai deu thich tao',
+    author: 'PFPITME',
+    url: 'vPod101.com'
+  }
+  const result = await api
+    .post('/api/blogs')
+    .send(blogWithoutLikes)
+    .expect(201)
+    .expect('Content-Type',/application\/json/)
 
-
+  console.log('result is---', result.body)
+  assert.strictEqual(result.body.likes, 0)
 })
