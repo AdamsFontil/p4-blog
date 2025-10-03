@@ -22,19 +22,19 @@ blogsRouter.post('/', async (request, response) => {
   const body = request.body
   if (!body.url || !body.title) {
     console.log('missing url or title')
-    response.status(400).json({ error: 'title or url missing' })
+    response.status(400).json({ error: 'title or url missing' }).end()
+  } else {
+    const blog = new Blog({
+      title: body.title,
+      author: body.author,
+      url: body.url,
+      likes: body.likes || 0,
+    })
+
+    console.log(`success adding ${blog} to DB`)
+    const savedBlog = await blog.save()
+    response.status(201).json(savedBlog)
   }
-
-  const blog = new Blog({
-    title: body.title,
-    author: body.author,
-    url: body.url,
-    likes: body.likes || 0,
-  })
-
-  console.log(`success adding ${blog} to DB`)
-  const savedBlog = await blog.save()
-  response.status(201).json(savedBlog)
 
 })
 

@@ -67,7 +67,7 @@ test('a valid blog can be added ', async () => {
     'Expected blog with matching content not found'
   )
 })
-test.only ('no likes = 0', async () => {
+test ('no likes = 0', async () => {
   const blogWithoutLikes = {
     title: 'Con gai va con trai deu thich tao',
     author: 'PFPITME',
@@ -81,4 +81,38 @@ test.only ('no likes = 0', async () => {
 
   console.log('result is---', result.body)
   assert.strictEqual(result.body.likes, 0)
+})
+test('missing title returns error 400', async () => {
+  const blogWithoutTitle = {
+    author: 'PFPITME',
+    url: 'vPod101.com',
+    likes: 23
+  }
+  const result = await api
+    .post('/api/blogs')
+    .send(blogWithoutTitle)
+    .expect(400)
+
+  console.log('result is---', result.body)
+  const blogsAtEnd = await helper.blogsInDb()
+  console.log('blogs at the end, no new entry,',blogsAtEnd)
+  console.log('length vs length', blogsAtEnd.length, helper.initialBlogs.length)
+  assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
+})
+test('missing url results in an error 400', async () => {
+  const blogWithoutUrl = {
+    title: 'Con gai va con trai deu thich tao',
+    author: 'PFPITME',
+    likes: 23
+  }
+  const result = await api
+    .post('/api/blogs')
+    .send(blogWithoutUrl)
+    .expect(400)
+
+  console.log('result is---', result.body)
+  const blogsAtEnd = await helper.blogsInDb()
+  console.log('blogs at the end, no new entry,',blogsAtEnd)
+  console.log('length vs length', blogsAtEnd.length, helper.initialBlogs.length)
+  assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
 })

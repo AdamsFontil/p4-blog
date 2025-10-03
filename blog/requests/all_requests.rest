@@ -10,6 +10,6 @@ POST http://localhost:3003/api/blogs/ HTTP/1.1
 content-type: application/json
 
 {
-    "title": "missing URL should not work",
+    "title": "missing URL should not work2",
     "author": "PFPITME"
 }
