@@ -1,118 +1,121 @@
 const assert = require('node:assert')
-const { test, beforeEach } = require('node:test')
+const { test, beforeEach, describe } = require('node:test')
 const supertest = require('supertest')
 const app = require('../app')
 const helper = require('./test_blog_helper')
 const Blog = require('../models/blog')
 
 const api = supertest(app)
-
 beforeEach(async () => {
   await Blog.deleteMany({})
   await Blog.insertMany(helper.initialBlogs)
 })
 
-test('blogs are returned as json', async () => {
-  await api
-    .get('/api/blogs')
-    .expect(200)
-    .expect('Content-Type', /application\/json/)
+describe('checking initial blogs', () => {
+  test('blogs are returned as json', async () => {
+    await api
+      .get('/api/blogs')
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+  })
+
+  test('all blogs are returned', async () => {
+    const response = await api.get('/api/blogs')
+    assert.strictEqual(response.body.length, helper.initialBlogs.length)
+    //console.log(`response body length is ${response.body.length} vs contant length is ${response.body.length}`)
+
+  })
+  test('id string is the identifier', async () => {
+    const blogs = await Blog.find({})
+    const specificBlog = blogs[2].toJSON()
+
+    //console.log('need this blog\'s id:', specificBlog.id)
+
+    const callSpecificBlog = await api
+      .get(`/api/blogs/${specificBlog.id}`)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    assert.ok(callSpecificBlog.body.id, 'Expected "id" to be defined')
+    assert.strictEqual(typeof callSpecificBlog.body.id, 'string', '"id" should be a string')
+    assert.strictEqual(callSpecificBlog.body._id, undefined, 'Expected "_id" to be undefined')
+    //console.log('confirm that calling specific blog results in id instead _id also _v should be missing', callSpecificBlog.body )
+  })
 })
 
-test('all blogs are returned', async () => {
-  const response = await api.get('/api/blogs')
-  assert.strictEqual(response.body.length, helper.initialBlogs.length)
-  console.log(`response body length is ${response.body.length} vs contant length is ${response.body.length}`)
-
-
-})
-test('id string is the identifier', async () => {
-  const blogs = await Blog.find({})
-  const specificBlog = blogs[2].toJSON()
-
-  console.log('need this blog\'s id:', specificBlog.id)
-
-  const callSpecificBlog = await api
-    .get(`/api/blogs/${specificBlog.id}`)
-    .expect(200)
-    .expect('Content-Type', /application\/json/)
-
-  assert.ok(callSpecificBlog.body.id, 'Expected "id" to be defined')
-  assert.strictEqual(typeof callSpecificBlog.body.id, 'string', '"id" should be a string')
-  assert.strictEqual(callSpecificBlog.body._id, undefined, 'Expected "_id" to be undefined')
-  console.log('confirm that calling specific blog results in id instead _id also _v should be missing', callSpecificBlog.body )
-})
-test('a valid blog can be added ', async () => {
-  const newBlog = {
-    title: 'Con gai va con trai deu thich tao',
-    author: 'PFPITME',
-    url: 'vPod101.com',
-    likes: 9224
-  }
-  await api
-    .post('/api/blogs')
-    .send(newBlog)
-    .expect(201)
-    .expect('Content-Type', /application\/json/)
-  const blogsAtEnd = await helper.blogsInDb()
-  console.log('blogs at the end, look for new entry,',blogsAtEnd)
-  assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length + 1)
-  assert(
-    blogsAtEnd.some(blog =>
-      blog.title === newBlog.title &&
+describe('adding blogs', () => {
+  test('a valid blog can be added ', async () => {
+    const newBlog = {
+      title: 'Con gai va con trai deu thich tao',
+      author: 'PFPITME',
+      url: 'vPod101.com',
+      likes: 9224
+    }
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+    const blogsAtEnd = await helper.blogsInDb()
+    //console.log('blogs at the end, look for new entry,',blogsAtEnd)
+    assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length + 1)
+    assert(
+      blogsAtEnd.some(blog =>
+        blog.title === newBlog.title &&
       blog.author === newBlog.author &&
       blog.url === newBlog.url &&
       blog.likes === newBlog.likes
-    ),
-    'Expected blog with matching content not found'
-  )
-})
-test ('no likes = 0', async () => {
-  const blogWithoutLikes = {
-    title: 'Con gai va con trai deu thich tao',
-    author: 'PFPITME',
-    url: 'vPod101.com'
-  }
-  const result = await api
-    .post('/api/blogs')
-    .send(blogWithoutLikes)
-    .expect(201)
-    .expect('Content-Type',/application\/json/)
+      ),
+      'Expected blog with matching content not found'
+    )
+  })
+  test ('no likes = 0', async () => {
+    const blogWithoutLikes = {
+      title: 'Con gai va con trai deu thich tao',
+      author: 'PFPITME',
+      url: 'vPod101.com'
+    }
+    const result = await api
+      .post('/api/blogs')
+      .send(blogWithoutLikes)
+      .expect(201)
+      .expect('Content-Type',/application\/json/)
 
-  console.log('result is---', result.body)
-  assert.strictEqual(result.body.likes, 0)
-})
-test('missing title returns error 400', async () => {
-  const blogWithoutTitle = {
-    author: 'PFPITME',
-    url: 'vPod101.com',
-    likes: 23
-  }
-  const result = await api
-    .post('/api/blogs')
-    .send(blogWithoutTitle)
-    .expect(400)
+    //console.log('result is---', result.body)
+    assert.strictEqual(result.body.likes, 0)
+  })
+  test('missing title returns error 400', async () => {
+    const blogWithoutTitle = {
+      author: 'PFPITME',
+      url: 'vPod101.com',
+      likes: 23
+    }
+    const result = await api
+      .post('/api/blogs')
+      .send(blogWithoutTitle)
+      .expect(400)
 
-  console.log('result is---', result.body)
-  const blogsAtEnd = await helper.blogsInDb()
-  console.log('blogs at the end, no new entry,',blogsAtEnd)
-  console.log('length vs length', blogsAtEnd.length, helper.initialBlogs.length)
-  assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
-})
-test('missing url results in an error 400', async () => {
-  const blogWithoutUrl = {
-    title: 'Con gai va con trai deu thich tao',
-    author: 'PFPITME',
-    likes: 23
-  }
-  const result = await api
-    .post('/api/blogs')
-    .send(blogWithoutUrl)
-    .expect(400)
+    //console.log('result is---', result.body)
+    const blogsAtEnd = await helper.blogsInDb()
+    //console.log('blogs at the end, no new entry,',blogsAtEnd)
+    //console.log('length vs length', blogsAtEnd.length, helper.initialBlogs.length)
+    assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
+  })
+  test('missing url results in an error 400', async () => {
+    const blogWithoutUrl = {
+      title: 'Con gai va con trai deu thich tao',
+      author: 'PFPITME',
+      likes: 23
+    }
+    const result = await api
+      .post('/api/blogs')
+      .send(blogWithoutUrl)
+      .expect(400)
 
-  console.log('result is---', result.body)
-  const blogsAtEnd = await helper.blogsInDb()
-  console.log('blogs at the end, no new entry,',blogsAtEnd)
-  console.log('length vs length', blogsAtEnd.length, helper.initialBlogs.length)
-  assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
+    //console.log('result is---', result.body)
+    const blogsAtEnd = await helper.blogsInDb()
+    //console.log('blogs at the end, no new entry,',blogsAtEnd)
+    //console.log('length vs length', blogsAtEnd.length, helper.initialBlogs.length)
+    assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
+  })
 })
