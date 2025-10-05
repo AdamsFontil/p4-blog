@@ -90,7 +90,7 @@ describe('adding blogs', () => {
       url: 'vPod101.com',
       likes: 23
     }
-    const result = await api
+    await api
       .post('/api/blogs')
       .send(blogWithoutTitle)
       .expect(400)
@@ -107,7 +107,7 @@ describe('adding blogs', () => {
       author: 'PFPITME',
       likes: 23
     }
-    const result = await api
+    await api
       .post('/api/blogs')
       .send(blogWithoutUrl)
       .expect(400)
@@ -117,5 +117,27 @@ describe('adding blogs', () => {
     //console.log('blogs at the end, no new entry,',blogsAtEnd)
     //console.log('length vs length', blogsAtEnd.length, helper.initialBlogs.length)
     assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
+  })
+})
+describe.only('deleting posts', () => {
+  test('succeeds with code of 204 id is', async () =>{
+    const blogsAtStart = await helper.blogsInDb()
+    const blogToDelete = blogsAtStart[0]
+    console.log('blogs at start', blogsAtStart)
+    console.log('blog to remove', blogToDelete)
+
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .expect(204)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    console.log('blogsAttheEnd', blogsAtEnd)
+    console.log('target', blogToDelete)
+    console.log(`lengths compared ${blogsAtEnd.length} vs ${blogsAtStart.length - 1}`)
+    assert.strictEqual(blogsAtEnd.length, blogsAtStart.length - 1)
+
+    const contents = blogsAtEnd.map(blogs => blogs)
+    console.log('what are contents', contents)
+    assert(!contents.includes.blogToDelete)
   })
 })
