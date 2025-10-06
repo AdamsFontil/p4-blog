@@ -1,11 +1,16 @@
 const assert = require('node:assert')
+const bcrypt = require('bcrypt')
 const { test, beforeEach, describe } = require('node:test')
+// const mongoose = require('mongoose')
 const supertest = require('supertest')
+
 const app = require('../app')
 const helper = require('./test_blog_helper')
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 const api = supertest(app)
+
 beforeEach(async () => {
   await Blog.deleteMany({})
   await Blog.insertMany(helper.initialBlogs)
@@ -187,4 +192,137 @@ describe('updating blogs', () => {
     console.log('typeof FakeID', typeof(fakeId))
 
   })
+})
+describe('when there is initially one user in db25', () => {
+  beforeEach(async () => {
+    await User.deleteMany({})
+
+    const passwordHash = await bcrypt.hash('sekret', 10)
+    const user = new User({ username: 'root', name: 'root user', passwordHash })
+    console.log('testing beforeeach')
+
+    await user.save()
+  })
+
+  test('creation succeeds with a fresh username23', async () => {
+    const usersAtStart = await helper.usersInDb()
+    console.log('users in db', usersAtStart)
+
+    const newUser = {
+      username: 'mluukkai',
+      name: 'Matti Luukkainen',
+      password: 'salainen',
+    }
+
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+
+    const usersAtEnd = await helper.usersInDb()
+    assert.strictEqual(usersAtEnd.length, usersAtStart.length + 1)
+    console.log('users at end', usersAtEnd)
+
+    const usernames = usersAtEnd.map(u => u.username)
+    assert(usernames.includes(newUser.username))
+  })
+  test.only('missing parameters ie name or username fails with code 400', async () => {
+    const usersAtStart = await helper.usersInDb()
+    console.log('users in db', usersAtStart)
+
+    const missingName = {
+      username: 'mluukkai',
+      password: 'salainen',
+    }
+
+    await api
+      .post('/api/users')
+      .send(missingName)
+      .expect(400)
+
+    const missingUserName = {
+      name: 'mluukkai',
+      password: 'salainen',
+    }
+
+    await api
+      .post('/api/users')
+      .send(missingUserName)
+      .expect(400)
+
+    const usersAtEnd = await helper.usersInDb()
+    assert.strictEqual(usersAtEnd.length, usersAtStart.length)
+    console.log('users at end', usersAtEnd)
+
+    const usernames = usersAtEnd.map(u => u.username)
+    assert(!usernames.includes(missingName.username))
+    assert(!usernames.includes(missingUserName.name))
+
+  })
+  test('usernames must be unique', async () => {
+    const usersAtStart = await helper.usersInDb()
+    console.log('users at start', usersAtStart)
+
+    const attempt1User = {
+      username: 'mluukkai',
+      name: 'Not Matti',
+      password: 'salainen',
+    }
+
+    await api
+      .post('/api/users')
+      .send(attempt1User)
+      .expect(201)
+
+    const usersInMiddle = await helper.usersInDb()
+    console.log('middle', usersInMiddle)
+
+    const sameUserNameDifferentName = {
+      username: 'mluukkai',
+      name: 'Not Matti 2',
+      password: 'salainen',
+    }
+    await api
+      .post('/api/users')
+      .send(sameUserNameDifferentName)
+      .expect(400)
+
+    const usersAtEnd = await helper.usersInDb()
+    assert.strictEqual(usersAtEnd.length, usersAtStart.length + 1)
+    console.log('users at end', usersAtEnd)
+  })
+  test.only('usernames and names less than 3 char return error', async () => {
+    const usersAtStart = await helper.usersInDb()
+    console.log('users at start', usersAtStart)
+
+    const badUsername = {
+      username: 'ml',
+      name: 'Matti Salli',
+      password: 'salainen',
+    }
+
+    await api
+      .post('/api/users')
+      .send(badUsername)
+      .expect(400)
+
+    const usersInMiddle = await helper.usersInDb()
+    console.log('middle', usersInMiddle)
+
+    const badName = {
+      username: 'mluukkai',
+      name: 'No',
+      password: 'salainen',
+    }
+    await api
+      .post('/api/users')
+      .send(badName)
+      .expect(400)
+
+    const usersAtEnd = await helper.usersInDb()
+    assert.strictEqual(usersAtEnd.length, usersAtStart.length)
+    console.log('users at end', usersAtEnd)
+  })
+
 })

@@ -1,10 +1,5 @@
 GET http://localhost:3003/api/users
 
-###
-GET http://localhost:3003/api/blogs/68dd023b84cdb7f07f351d15f
-###
-DELETE http://localhost:3003/api/blogs/68df34995ea99d4dcae3f903
-
 
 ###
 POST http://localhost:3003/api/users/ HTTP/1.1
@@ -12,7 +7,6 @@ content-type: application/json
 
 {
     "username": "hellas",
-    "name": "arto hellas",
     "password": "12345"
 }
 
