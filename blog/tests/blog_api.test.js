@@ -119,8 +119,8 @@ describe('adding blogs', () => {
     assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
   })
 })
-describe.only('deleting posts', () => {
-  test('succeeds with code of 204 id is', async () =>{
+describe('deleting posts', () => {
+  test('succeeds with code of 204 id is', async () => {
     const blogsAtStart = await helper.blogsInDb()
     const blogToDelete = blogsAtStart[0]
     console.log('blogs at start', blogsAtStart)
@@ -139,5 +139,52 @@ describe.only('deleting posts', () => {
     const contents = blogsAtEnd.map(blogs => blogs)
     console.log('what are contents', contents)
     assert(!contents.includes.blogToDelete)
+  })
+})
+describe('updating blogs', () => {
+  test('correct id updates the DB', async () => {
+    const blogsAtStart = await helper.blogsInDb()
+    const targetAtStart = blogsAtStart[0]
+    const updatedBlog = {
+      title: 'React patterns23',
+      author: 'Michael Chan2',
+      url: 'https://reactpatterns.com/2',
+      likes: 72,
+    }
+    console.log('target---',targetAtStart)
+    const result =  await api
+      .put(`/api/blogs/${targetAtStart.id}`)
+      .send(updatedBlog)
+      .expect(200)
+
+    console.log('what is result,,,', result.data)
+    const blogsAtEnd = await helper.blogsInDb()
+
+    assert.strictEqual(blogsAtEnd.length, blogsAtStart.length)
+    assert(
+      blogsAtEnd.some(
+        blog =>
+          blog.title === updatedBlog.title &&
+          blog.author === updatedBlog.author &&
+          blog.url === updatedBlog.url &&
+          blog.likes === updatedBlog.likes
+      )
+    )
+  })
+  test('wrong id returns error', async () => {
+    const fakeId = '68dd023b84cdb7f07f351d156'
+    const putMethodShouldNotWork = {
+      title: 'React patterns23',
+      author: 'Michael Chan2',
+      url: 'https://reactpatterns.com/2',
+      likes: 72,
+    }
+    await api
+      .put(`/api/blogs/${fakeId}`)
+      .send(putMethodShouldNotWork)
+      .expect(400)
+
+    console.log('typeof FakeID', typeof(fakeId))
+
   })
 })
