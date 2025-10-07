@@ -1,17 +1,16 @@
-GET http://localhost:3003/api/blogs/68e4fddac3a2a1c687c509ff
+GET http://localhost:3003/api/blogs/68e5094084e0984f19bf9f42
 
 ###
 GET http://localhost:3003/api/users/
 
 
 ###
-DELETE http://localhost:3003/api/blogs/68e4fddac3a2a1c687c509ff
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhlbGxhcyIsImlkIjoiNjhlM2Q3OTY0YWUzMDc2NTk0MzRhM2Q1IiwiaWF0IjoxNzU5ODM2OTYwLCJleHAiOjE3NTk4NDA1NjB9.YrxhxAKRXAmZTEeTZ9vjdWLtW5UIHs6xwdhuZhIms8s
-
+DELETE http://localhost:3003/api/blogs/68e5094084e0984f19bf9f42
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhlbGxhcyIsImlkIjoiNjhlM2Q3OTY0YWUzMDc2NTk0MzRhM2Q1IiwiaWF0IjoxNzU5ODQwNjAxLCJleHAiOjE3NTk4NDQyMDF9._znZA4oKaW5RTFf3Rwb33JiWn-HmrWOc-MSRCrAIAUE
 ###
 POST http://localhost:3003/api/blogs/ HTTP/1.1
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhlbGxhcyIsImlkIjoiNjhlM2Q3OTY0YWUzMDc2NTk0MzRhM2Q1IiwiaWF0IjoxNzU5ODM2ODc2LCJleHAiOjE3NTk4NDA0NzZ9.u-fFgnZK4ACSEeCtRy5JiNEY5x6ay-1SPiC2P-o67-o
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhlbGxhcyIsImlkIjoiNjhlM2Q3OTY0YWUzMDc2NTk0MzRhM2Q1IiwiaWF0IjoxNzU5ODQwNDI3LCJleHAiOjE3NTk4NDQwMjd9.BzhSJzjcZs61Xqys5MEoKdnHCQrd01HHjxY-9eWIbtE
 
 {
     "title": "second option can only be removed by hellas",
