@@ -1,8 +1,6 @@
 const blogsRouter = require('express').Router()
-const jwt = require('jsonwebtoken')
 const Blog = require('../models/blog')
-const User = require('../models/user')
-const { tokenExtractor } = require('../utils/middleware')
+const { userExtractor, tokenExtractor } = require('../utils/middleware')
 
 
 blogsRouter.get('/', async (request, response) => {
@@ -21,56 +19,36 @@ blogsRouter.get('/:id', async (request, response) => {
   }
 })
 
-blogsRouter.post('/', tokenExtractor, async (request, response) => {
+blogsRouter.post('/', tokenExtractor, userExtractor, async (request, response) => {
   const body = request.body
   if (!body.url || !body.title) {
     console.log('missing url or title')
     response.status(400).json({ error: 'title or url missing' }).end()
-  } else {
-    const token = request.token
-    const decodedToken = jwt.verify(token, process.env.SECRET)
-    if (!decodedToken.id) {
-      return response.status(401).json({ error: 'token invalid' })
-    }
-    const user = await User.findById(decodedToken.id)
-    if (!user) {
-      return response.status(400).json({ error: 'userId missing or not valid' })
-    }
-    const blog = new Blog({
-      title: body.title,
-      author: body.author,
-      url: body.url,
-      likes: body.likes || 0,
-      user: user._id
-    })
-
-    console.log(`success adding ${blog} to DB`)
-    const savedBlog = await blog.save()
-    user.blogs = user.blogs.concat(savedBlog._id)
-    await user.save()
-    response.status(201).json(savedBlog)
   }
+  const user = request.user
+  const blog = new Blog({
+    title: body.title,
+    author: body.author,
+    url: body.url,
+    likes: body.likes || 0,
+    user: user._id
+  })
+
+  console.log(`success adding ${blog} to DB`)
+  const savedBlog = await blog.save()
+  user.blogs = user.blogs.concat(savedBlog._id)
+  await user.save()
+  response.status(201).json(savedBlog)
+
 })
 
-blogsRouter.delete('/:id',tokenExtractor, async (request, response) => {
+blogsRouter.delete('/:id', tokenExtractor, userExtractor, async (request, response) => {
+  const user = request.user
   const blogInfo = await Blog.findById(request.params.id)
-  if (!blogInfo) {
-    console.log('Blog not found, either deleted or wrong id')
-    return response.status(402).json({ error: 'Blog not found, either deleted or wrong id' })
-  }
-  const token = request.token
-  // console.log('token---',token)
-  console.log('Selected blog---', blogInfo)
 
-  const decodedToken = jwt.verify(token, process.env.SECRET)
-  if (!decodedToken.id) {
-    return response.status(401).json({ error: 'token invalid' })
+  if (!blogInfo) {
+    return response.status(404).json({ error: 'blog not found' })
   }
-  const user = await User.findById(decodedToken.id)
-  if (!user) {
-    return response.status(400).json({ error: 'userId missing or not valid' })
-  }
-  console.log(`do these two match ${blogInfo.user} and ${user.id}`)
 
   if (blogInfo.user.toString() === user._id.toString()) {
     const removedBlog = await Blog.findByIdAndDelete(request.params.id)

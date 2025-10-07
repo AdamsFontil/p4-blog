@@ -1,22 +1,23 @@
-GET http://localhost:3003/api/blogs/68e42e55add583efbb46d952
+GET http://localhost:3003/api/blogs/68e4fddac3a2a1c687c509ff
 
 ###
 GET http://localhost:3003/api/users/
 
 
 ###
-DELETE http://localhost:3003/api/blogs/68e42e55add583efbb46d952
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOiI2OGU0MjU1YTZjYmM1NzYxYmVmZDQ2MTIiLCJpYXQiOjE3NTk4MTU4NTgsImV4cCI6MTc1OTgxOTQ1OH0.IL5Z0hv35f5yHX98Q4lMM24jWo6I7YGM2oqLuNY7w44
+DELETE http://localhost:3003/api/blogs/68e4fddac3a2a1c687c509ff
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhlbGxhcyIsImlkIjoiNjhlM2Q3OTY0YWUzMDc2NTk0MzRhM2Q1IiwiaWF0IjoxNzU5ODM2OTYwLCJleHAiOjE3NTk4NDA1NjB9.YrxhxAKRXAmZTEeTZ9vjdWLtW5UIHs6xwdhuZhIms8s
 
 ###
 POST http://localhost:3003/api/blogs/ HTTP/1.1
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhlbGxhcyIsImlkIjoiNjhlM2Q3OTY0YWUzMDc2NTk0MzRhM2Q1IiwiaWF0IjoxNzU5ODEzNzAyLCJleHAiOjE3NTk4MTczMDJ9.AiMaVGVEYaM0NR12IpTrGWxt8SZvWS-sozjnMPMEFJc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhlbGxhcyIsImlkIjoiNjhlM2Q3OTY0YWUzMDc2NTk0MzRhM2Q1IiwiaWF0IjoxNzU5ODM2ODc2LCJleHAiOjE3NTk4NDA0NzZ9.u-fFgnZK4ACSEeCtRy5JiNEY5x6ay-1SPiC2P-o67-o
+
 {
-    "title": "testing token middleware23",
+    "title": "second option can only be removed by hellas",
     "author": "hellas",
     "url": "hellaswrotethis.com",
-    "likes": 1930
+    "likes": 122
 }
 
 
@@ -25,6 +26,6 @@ POST http://localhost:3003/api/login HTTP/1.1
 content-type: application/json
 
 {
-    "username": "mluukkai",
+    "username": "hellas",
     "password": "12345"
 }
