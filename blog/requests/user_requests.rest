@@ -1,21 +1,17 @@
-GET http://localhost:3003/api/users
+GET http://localhost:3003/api/blogs/68e42e55add583efbb46d952
+
+###
+GET http://localhost:3003/api/users/
 
 
 ###
-POST http://localhost:3003/api/login/ HTTP/1.1
-content-type: application/json
-
-{
-    "username": "hellas",
-    "password": "12345"
-}
-
+DELETE http://localhost:3003/api/blogs/68e42e55add583efbb46d952
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOiI2OGU0MjU1YTZjYmM1NzYxYmVmZDQ2MTIiLCJpYXQiOjE3NTk4MTU4NTgsImV4cCI6MTc1OTgxOTQ1OH0.IL5Z0hv35f5yHX98Q4lMM24jWo6I7YGM2oqLuNY7w44
 
 ###
 POST http://localhost:3003/api/blogs/ HTTP/1.1
 content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhlbGxhcyIsImlkIjoiNjhlM2Q3OTY0YWUzMDc2NTk0MzRhM2Q1IiwiaWF0IjoxNzU5ODExNjg5LCJleHAiOjE3NTk4MTUyODl9.S-BgzxR7ecsb2lfmuf7G5oFBBiQOHYHH7wXbfzxrBhk
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImhlbGxhcyIsImlkIjoiNjhlM2Q3OTY0YWUzMDc2NTk0MzRhM2Q1IiwiaWF0IjoxNzU5ODEzNzAyLCJleHAiOjE3NTk4MTczMDJ9.AiMaVGVEYaM0NR12IpTrGWxt8SZvWS-sozjnMPMEFJc
 {
     "title": "testing token middleware23",
     "author": "hellas",
@@ -30,6 +26,5 @@ content-type: application/json
 
 {
     "username": "mluukkai",
-    "name": "Matti Luukkanein",
     "password": "12345"
 }

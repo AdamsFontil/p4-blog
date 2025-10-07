@@ -52,9 +52,39 @@ blogsRouter.post('/', tokenExtractor, async (request, response) => {
   }
 })
 
-blogsRouter.delete('/:id', async (request, response) => {
-  await Blog.findByIdAndDelete(request.params.id)
-  response.status(204).end()
+blogsRouter.delete('/:id',tokenExtractor, async (request, response) => {
+  const blogInfo = await Blog.findById(request.params.id)
+  if (!blogInfo) {
+    console.log('Blog not found, either deleted or wrong id')
+    return response.status(402).json({ error: 'Blog not found, either deleted or wrong id' })
+  }
+  const token = request.token
+  // console.log('token---',token)
+  console.log('Selected blog---', blogInfo)
+
+  const decodedToken = jwt.verify(token, process.env.SECRET)
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: 'token invalid' })
+  }
+  const user = await User.findById(decodedToken.id)
+  if (!user) {
+    return response.status(400).json({ error: 'userId missing or not valid' })
+  }
+  console.log(`do these two match ${blogInfo.user} and ${user.id}`)
+
+  if (blogInfo.user.toString() === user._id.toString()) {
+    const removedBlog = await Blog.findByIdAndDelete(request.params.id)
+    user.blogs = user.blogs.filter(
+      blogId => blogId.toString() !== removedBlog._id.toString()
+    )
+    await user.save()
+
+    console.log('Blog deleted:', removedBlog)
+    return response.status(204).end()
+  } else {
+    console.log('Not authorized to delete this blog')
+    return response.status(403).json({ error: 'not authorized to delete this blog' })
+  }
 })
 
 blogsRouter.put('/:id', async (request, response) => {
