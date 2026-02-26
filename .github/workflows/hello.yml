@@ -1,4 +1,4 @@
-name: Hello World!
+name: Project Checks
 
 on:
   push:
@@ -6,9 +6,21 @@ on:
       - main
 
 jobs:
-  hello_world_job:
+  run-project-commands:
     runs-on: ubuntu-latest
     steps:
-      - name: Say hello
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: List Root Files
+        run: ls -R
+
+      - name: Run commands in blog-client-redux
+        working-directory: ./blog-client-redux
         run: |
-          echo "Hello World!"
+          ls
+          npm install --dry-run # Or whatever command you need
+
+      - name: Run commands in other folder
+        working-directory: ./blog-server
+        run: ls
