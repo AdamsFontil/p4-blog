@@ -1,20 +1,38 @@
-# name: Deployment pipeline
+name: Deployment pipeline
 
-# on:
-#   push:
-#     branches:
-#       - main
+on:
+  push:
+    branches:
+      - main
 
-# jobs:
-#   simple_deployment_pipeline:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - uses: actions/checkout@v4
-#       - uses: actions/setup-node@v4
-#         with:
-#           node-version: '20'
-#       - name: Install dependencies
-#         run: npm install
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
 
-#       - name: Check style
-#         run: npm run eslint
+      - name: Build Frontend
+        working-directory: ./blog-client-redux
+        run: |
+          npm install
+          npm run build
+
+      - name: Move Dist to Backend
+        run: |
+          rm -rf ./blog-server/dist
+          mv ./blog-client-redux/dist ./blog-server/dist
+
+      - name: Setup Flyctl
+        # if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
+        uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Deploy to fly.io
+        working-directory: ./blog-server
+        # if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
+        run: |
+          ls
+          flyctl deploy --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}

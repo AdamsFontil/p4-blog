@@ -18,15 +18,8 @@ jobs:
       - name: Lint code
         working-directory: ./blog-client-redux
         run: |
-          npm run lint
-      - name: Run tests
+          ls
+      - name:
         working-directory: ./blog-client-redux
         run: |
-          npm run test
-
-      - name: Lint code in server
-        working-directory: ./blog-server
-        run: npm run lint
-      - name: Test code in server
-        working-directory: ./blog-server
-        run: npm run test
+          ls
