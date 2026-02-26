@@ -15,12 +15,18 @@ jobs:
       - name: List Root Files
         run: ls -R
 
-      - name: Run commands in blog-client-redux
+      - name: Lint code
         working-directory: ./blog-client-redux
         run: |
-          ls
-          npm install --dry-run # Or whatever command you need
+          npm run lint
+      - name: Run tests
+        working-directory: ./blog-client-redux
+        run: |
+          npm run test
 
-      - name: Run commands in other folder
+      - name: Lint code in server
         working-directory: ./blog-server
-        run: ls
+        run: npm run lint
+      - name: Test code in server
+        working-directory: ./blog-server
+        run: npm run test
