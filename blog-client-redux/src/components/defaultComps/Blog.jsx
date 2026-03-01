@@ -11,7 +11,6 @@ const Blog = ({ blog }) => {
   console.log("what is blog202??", blog);
   return (
     <li style={blogStyle}>
-      <h2>Testing testing</h2>
       <Link className="list-row p-4" to={`/blogs/${blog.id}`}>
         {blog.title} {blog.author}
       </Link>
