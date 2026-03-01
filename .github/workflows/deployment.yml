@@ -57,7 +57,7 @@ jobs:
             username: "GitHub Actions"
 
   tag_release:
-    needs: [simple_deployment_pipeline]
+    needs: [deploy]
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
     steps:
