@@ -13,7 +13,7 @@ const Home = () => {
         <CreateBlogForm />
       </Togglable>
       <div className="p-4">
-        <h1>Hello Wrld 3</h1>
+        <h1>Hello Wrld 4</h1>
         <ul className="list bg-base-100 shadow-md">
           {[...blogs]
             .sort((a, b) => b.likes - a.likes)
