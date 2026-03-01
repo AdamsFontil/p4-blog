@@ -18,9 +18,15 @@ mongoose
   .catch((error) => {
     logger.error('error connecting to MongoDB',error.message)
   })
+// app.get('/health', (req, res) => {
+//   res.send('ok')
+// })
 app.get('/health', (req, res) => {
+  // eslint-disable-next-line no-constant-condition
+  if (true) throw('error...  ')
   res.send('ok')
 })
+
 app.use(express.static('dist'))
 app.use(express.json())
 app.use(middleware.requestLogger)
