@@ -1,11 +1,11 @@
-import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { logoutUser } from "../../reducers/userReducer";
-import ToggleTheme from "../misc/ToggleTheme";
+import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { logoutUser } from '../../reducers/userReducer'
+import ToggleTheme from '../misc/ToggleTheme'
 
 const Navbar = ({ user }) => {
-  const dispatch = useDispatch();
-  console.log("what is", user);
+  const dispatch = useDispatch()
+  console.log('what is', user)
   // if (!user) return null;
 
   return (
@@ -37,7 +37,7 @@ const Navbar = ({ user }) => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar

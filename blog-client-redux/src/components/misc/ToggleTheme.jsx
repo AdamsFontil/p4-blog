@@ -1,19 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react'
 
 const ToggleTheme = () => {
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState(false)
 
   // Update the theme when isDark changes
   useEffect(() => {
     document.documentElement.setAttribute(
-      "data-theme",
-      isDark ? "night" : "corporate", // replace 'corporate' with your default light theme
-    );
-  }, [isDark]);
+      'data-theme',
+      isDark ? 'night' : 'corporate', // replace 'corporate' with your default light theme
+    )
+  }, [isDark])
 
   const handleChange = (e) => {
-    setIsDark(e.target.checked);
-  };
+    setIsDark(e.target.checked)
+  }
 
   return (
     <div>
@@ -40,7 +40,7 @@ const ToggleTheme = () => {
         </svg>
       </label>
     </div>
-  );
-};
+  )
+}
 
-export default ToggleTheme;
+export default ToggleTheme

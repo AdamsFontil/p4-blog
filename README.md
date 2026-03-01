@@ -3,4 +3,4 @@
 Need to implement in git actions
 -linting
 -testing
--pinging
+-pinging - done

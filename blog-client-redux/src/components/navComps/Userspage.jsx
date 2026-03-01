@@ -1,22 +1,22 @@
-import { useQuery } from "@tanstack/react-query";
-import { getUsers } from "../../services/users";
-import { Link } from "react-router-dom";
+import { useQuery } from '@tanstack/react-query'
+import { getUsers } from '../../services/users'
+import { Link } from 'react-router-dom'
 
 const Users = () => {
   const result = useQuery({
-    queryKey: ["users"],
+    queryKey: ['users'],
     queryFn: getUsers,
-  });
+  })
 
   if (result.isLoading) {
     return (
       <div className="flex justify-center items-center h-64">
         <span className="loading loading-spinner loading-lg"></span>
       </div>
-    );
+    )
   }
 
-  const users = result.data;
+  const users = result.data
 
   return (
     <div className="p-4">
@@ -49,7 +49,7 @@ const Users = () => {
         </table>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Users;
+export default Users

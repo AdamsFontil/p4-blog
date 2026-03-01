@@ -1,19 +1,19 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { loginUser } from "../../reducers/userReducer";
-import Notification from "./Notification";
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { loginUser } from '../../reducers/userReducer'
+import Notification from './Notification'
 
 const LoginForm = () => {
-  const dispatch = useDispatch();
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const dispatch = useDispatch()
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
 
   const handleLogin = (event) => {
-    event.preventDefault();
-    dispatch(loginUser(username, password));
-    setUsername("");
-    setPassword("");
-  };
+    event.preventDefault()
+    dispatch(loginUser(username, password))
+    setUsername('')
+    setPassword('')
+  }
 
   return (
     <div className="hero bg-base-200 min-h-screen min">
@@ -63,7 +63,7 @@ const LoginForm = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default LoginForm;
+export default LoginForm

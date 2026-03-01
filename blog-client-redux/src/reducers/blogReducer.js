@@ -1,6 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
-import blogService from "../services/blogs"
-import { setNotification } from "./notificationReducer";
+import { createSlice } from '@reduxjs/toolkit'
+import blogService from '../services/blogs'
+import { setNotification } from './notificationReducer'
 
 
 const blogSlice = createSlice({
@@ -14,17 +14,17 @@ const blogSlice = createSlice({
       return action.payload
     },
     updateBlogOnRedux(state, action) {
-      console.log('selected blog--unchanged', action.payload);
+      console.log('selected blog--unchanged', action.payload)
       const blogToLike = action.payload
-      console.log('blogtoLike', blogToLike);
+      console.log('blogtoLike', blogToLike)
       return state.map((blog) => (blog.id !== blogToLike.id ? blog : blogToLike))
     },
     removeFromRedux(state, action) {
-      console.log('action.payload', action.payload);
+      console.log('action.payload', action.payload)
       return state.filter((blog) => blog.id !== action.payload.id)
     },
     addCommentToRedux(state, action) {
-      console.log('what is action payload', action.payload);
+      console.log('what is action payload', action.payload)
       const blogWithNewComment = action.payload
       return state.map((blog) => (blog.id === blogWithNewComment.id ? blogWithNewComment : blog ))
     }
@@ -37,7 +37,7 @@ export const initializeBlogs = () => {
   return async (dispatch) => {
     const blogs = await blogService.getAll()
     dispatch(setBlogs(blogs))
-    console.log('reducer dispatched', blogs);
+    console.log('reducer dispatched', blogs)
   }
 }
 
@@ -86,25 +86,25 @@ export const removeBlog = (blog) => {
         `Are you sure you want to remove "${blog.title}" by ${blog.author}?`,
       )
     ) {
-      return;
+      return
     }
     try {
-      console.log('blog info', blog);
-      await blogService.remove(blog.id); //remove from backend
+      console.log('blog info', blog)
+      await blogService.remove(blog.id) //remove from backend
       dispatch(removeFromRedux(blog)) // remove from frontend
       dispatch(setNotification({
         message: `removed ${blog.title} successfully`,
         messageType: 'info'
       },3))
     } catch (error) {
-      console.error("Something went wrong", error);
+      console.error('Something went wrong', error)
       dispatch(setNotification({
         message: 'Failed to remove this blog',
         messageType: 'error'
       },5))
     }
   }
-  };
+}
 
 
 export default blogSlice.reducer
