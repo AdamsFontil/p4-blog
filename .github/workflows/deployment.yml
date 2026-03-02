@@ -62,7 +62,7 @@ jobs:
             username: "GitHub Actions"
 
   tag_release:
-    needs: [deploy]
+    needs: [deploy2]
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
     steps:
