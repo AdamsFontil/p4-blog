@@ -20,11 +20,20 @@ jobs:
         working-directory: ./blog-client-redux
         run: |
           npm install
+          npm run lint
+          npm run test
           npm run build
       - name: Move Dist to Backend
         run: |
           rm -rf ./blog-server/dist
           mv ./blog-client-redux/dist ./blog-server/dist
+      - name: Show dist folder after move, lint and build
+        working-directory: ./blog-server
+        run: |
+          ls
+          npm install
+          npm run lint
+          npm run test
       - name: Setup Flyctl
         if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
         uses: superfly/flyctl-actions/setup-flyctl@master
@@ -57,7 +66,7 @@ jobs:
             content: "Hey adaone123<@316911818725392384>"
             title: "Something in pipeline failed site, go fix it!"
             description: "Go and fix the issue"
-            color: 0x0000ff
+            color: 0xff0000
             url: "https://github.com/sarisia/actions-status-discord"
             username: "GitHub Actions"
 

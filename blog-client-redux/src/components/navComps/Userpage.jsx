@@ -43,31 +43,31 @@
 
 // export default User;
 
-import { useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { getUsers } from "../../services/users";
-import { Link } from "react-router-dom";
+import { useParams } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
+import { getUsers } from '../../services/users'
+import { Link } from 'react-router-dom'
 
 const User = () => {
-  const { id } = useParams();
+  const { id } = useParams()
 
   const { data: users, isLoading } = useQuery({
-    queryKey: ["users"],
+    queryKey: ['users'],
     queryFn: getUsers,
-  });
+  })
 
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-64">
         <span className="loading loading-spinner loading-lg"></span>
       </div>
-    );
+    )
   }
 
-  const user = users?.find((u) => u.id === id);
+  const user = users?.find((u) => u.id === id)
 
   if (!user) {
-    return <div className="alert alert-error mt-4">User not found</div>;
+    return <div className="alert alert-error mt-4">User not found</div>
   }
 
   return (
@@ -97,7 +97,7 @@ const User = () => {
         </ul>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default User;
+export default User
