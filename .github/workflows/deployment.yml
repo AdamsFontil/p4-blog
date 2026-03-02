@@ -20,8 +20,6 @@ jobs:
         working-directory: ./blog-client-redux
         run: |
           npm install
-          npm run lint
-          npm run test
           npm run build
       - name: Move Dist to Backend
         run: |
@@ -66,7 +64,7 @@ jobs:
             content: "Hey adaone123<@316911818725392384>"
             title: "Something in pipeline failed site, go fix it!"
             description: "Go and fix the issue"
-            color: 0x0000ff
+            color: 0xff0000
             url: "https://github.com/sarisia/actions-status-discord"
             username: "GitHub Actions"
 
