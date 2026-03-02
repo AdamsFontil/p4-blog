@@ -16,10 +16,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Build Frontend 2
+      - name: Build Frontend
         working-directory: ./blog-client-redux
         run: |
           npm install
+          npm run lint
+          npm run test
           npm run build
       - name: Move Dist to Backend
         run: |
@@ -68,17 +70,17 @@ jobs:
             url: "https://github.com/sarisia/actions-status-discord"
             username: "GitHub Actions"
 
-  # tag_release:
-  #   needs: [deploy2]
-  #   runs-on: ubuntu-latest
-  #   if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
-  #   steps:
-  #     - name: Checkout repository
-  #       uses: actions/checkout@v4
-  #       with:
-  #         fetch-depth: '0' # Important for tagging actions to see history
-  #     - name: Bump version and push tag
-  #       uses: anothrNick/github-tag-action@4ed44965e0db8dab2b466a16da04aec3cc312fd8
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #         DEFAULT_BUMP: patch
+  tag_release:
+    needs: [deploy2]
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: '0' # Important for tagging actions to see history
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@4ed44965e0db8dab2b466a16da04aec3cc312fd8
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
