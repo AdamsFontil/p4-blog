@@ -19,7 +19,7 @@ mongoose
     logger.error('error connecting to MongoDB',error.message)
   })
 app.get('/health', (req, res) => {
-  res.send('okay')
+  res.send('oka99y')
 })
 // app.get('/health', (req, res) => {
 //   // eslint-disable-next-line no-constant-condition
