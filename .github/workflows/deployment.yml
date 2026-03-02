@@ -25,6 +25,12 @@ jobs:
         run: |
           rm -rf ./blog-server/dist
           mv ./blog-client-redux/dist ./blog-server/dist
+      - name: Show dist folder after move, lint and build
+        working-directory: ./blog-server
+        run: |
+          ls
+          npm run lint
+          npm run test
       - name: Setup Flyctl
         if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
         uses: superfly/flyctl-actions/setup-flyctl@master
