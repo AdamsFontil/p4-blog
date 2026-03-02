@@ -1,11 +1,13 @@
 name: Deployment pipeline
+
 on:
   push:
     branches:
       - main
-    pull_request:
+  pull_request:
     branches: [main]
     types: [opened, synchronize]
+
 jobs:
   deploy2:
     runs-on: ubuntu-latest
