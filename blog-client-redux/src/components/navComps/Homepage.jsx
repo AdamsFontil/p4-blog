@@ -1,12 +1,12 @@
-import Blog from "../defaultComps/Blog";
-import Togglable from "../defaultComps/Togglable";
-import CreateBlogForm from "../defaultComps/CreateBlogForm";
-import { useSelector } from "react-redux";
+import Blog from '../defaultComps/Blog'
+import Togglable from '../defaultComps/Togglable'
+import CreateBlogForm from '../defaultComps/CreateBlogForm'
+import { useSelector } from 'react-redux'
 
 const Home = () => {
-  const blogs = useSelector((state) => state.blogs);
+  const blogs = useSelector((state) => state.blogs)
 
-  console.log("blogs from home", blogs);
+  console.log('blogs from home', blogs)
   return (
     <div className="bg-rd-800">
       <Togglable buttonLabelShow="create new blog" buttonLabelCancel="cancel">
@@ -23,7 +23,7 @@ const Home = () => {
         </ul>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

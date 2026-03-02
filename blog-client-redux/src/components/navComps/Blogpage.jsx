@@ -1,30 +1,30 @@
-import { useState } from "react";
+import { useState } from 'react'
 import {
   appendComment,
   likeBlog,
   removeBlog,
-} from "../../reducers/blogReducer";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+} from '../../reducers/blogReducer'
+import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
 
 const Blogpage = () => {
-  const { id } = useParams();
-  const dispatch = useDispatch();
-  const blogs = useSelector((state) => state.blogs);
-  const user = useSelector((state) => state.user);
-  const [newComment, setNewComment] = useState("");
+  const { id } = useParams()
+  const dispatch = useDispatch()
+  const blogs = useSelector((state) => state.blogs)
+  const user = useSelector((state) => state.user)
+  const [newComment, setNewComment] = useState('')
 
-  const blog = blogs.find((b) => b.id === id);
-  if (!blog) return <div>Loading blog...</div>;
+  const blog = blogs.find((b) => b.id === id)
+  if (!blog) return <div>Loading blog...</div>
 
-  const canDelete = user?.username === blog?.user?.username;
-  const comments = blog?.comments || [];
+  const canDelete = user?.username === blog?.user?.username
+  const comments = blog?.comments || []
 
   const handleAddComment = () => {
-    if (newComment.trim() === "") return;
-    dispatch(appendComment(blog.id, newComment));
-    setNewComment("");
-  };
+    if (newComment.trim() === '') return
+    dispatch(appendComment(blog.id, newComment))
+    setNewComment('')
+  }
 
   return (
     <div className="container mx-auto p-4">
@@ -77,7 +77,7 @@ const Blogpage = () => {
         </ul>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Blogpage;
+export default Blogpage
