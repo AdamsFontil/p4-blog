@@ -9,7 +9,7 @@ services:
     image: blog-back-prod
     build:
       context: ./blog-server
-      dockerfile: dev.Dockerfile
+      dockerfile: Dockerfile
 
   debug-helper:
     image: busybox
