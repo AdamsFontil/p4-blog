@@ -1,0 +1,58 @@
+services:
+  app:
+    image: blog-front
+    build:
+      context: ./blog-client
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ./blog-client:/usr/src/app
+
+  nginx:
+    image: nginx:1.29
+    volumes:
+      - ./nginx.dev.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - 8080:80
+    depends_on:
+      - app # wait for the frontend container to be started
+
+  debug-helper:
+    image: busybox
+
+#   mongo:
+#     image: mongo
+#     environment:
+#       MONGO_INITDB_ROOT_USERNAME: root
+#       MONGO_INITDB_ROOT_PASSWORD: example
+#       MONGO_INITDB_DATABASE: the_database
+#     volumes:
+#       - ./todo-backend/mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
+#       - mongo_data:/data/db
+
+#   redis:
+#     image: redis:latest
+#     container_name: my-redis
+#     volumes:
+#       - redis-data:/data #data already persists 12.12 complete
+#     command: redis-server --requirepass redis_pass-123 --appendonly yes
+#     restart: unless-stopped
+
+#   backend:
+#     image: hello-back-dev
+#     container_name: todo-backend
+#     environment:
+#       REDIS_URL: redis://:redis_pass-123@redis:6379
+#       MONGO_URL: mongodb://root:example@mongo:27017/the_database?authSource=admin
+#     volumes:
+#       - ./todo-backend:/usr/src/app
+#     depends_on:
+#       - mongo
+#       - redis
+
+#   debug-helper:
+#     image: busybox
+
+# volumes:
+#   mongo_data:
+#   redis-data:
+#     driver: local
