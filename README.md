@@ -1,6 +1,4 @@
 # p4-blog
 
-Need to implement in git actions
--linting - done
--testing - done
--pinging - done
+Site live at 
+https://blog-server-wild-glitter-2388.fly.dev/
