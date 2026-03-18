@@ -1,19 +1,15 @@
 services:
   app:
-    image: blog-front-dev
+    image: blog-front-prod
     build:
       context: ./blog-client
-      dockerfile: dev.Dockerfile
-    volumes:
-      - ./blog-client:/usr/src/app
+      dockerfile: Dockerfile
 
   backend:
-    image: blog-back-dev
+    image: blog-back-prod
     build:
       context: ./blog-server
       dockerfile: dev.Dockerfile
-    volumes:
-      - ./blog-server:/usr/src/app
 
   debug-helper:
     image: busybox
@@ -21,7 +17,7 @@ services:
   nginx:
     image: nginx:1.29
     volumes:
-      - ./nginx.dev.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
     ports:
       - 8080:80
     depends_on:
