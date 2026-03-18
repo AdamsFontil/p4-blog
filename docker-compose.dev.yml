@@ -1,0 +1,29 @@
+services:
+  app:
+    image: blog-front
+    build:
+      context: ./blog-client
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ./blog-client:/usr/src/app
+
+  backend:
+    image: blog-back
+    build:
+      context: ./blog-server
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ./blog-server:/usr/src/app
+
+  debug-helper:
+    image: busybox
+
+  nginx:
+    image: nginx:1.29
+    volumes:
+      - ./nginx.dev.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - 8080:80
+    depends_on:
+      - app # wait for the frontend container to be started
+      - backend

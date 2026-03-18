@@ -27,6 +27,7 @@ const App = () => {
   return (
     <Router>
       <Navbar user={user} />
+      <h2>Hello2</h2>
       <Notification />
 
       <Routes>
